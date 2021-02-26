@@ -12,8 +12,16 @@
 
 <body>
     <div>
-        <canvas id="drawingCanvas" width="800" height="600"></canvas>
+        <div>
+            <canvas id="drawingCanvas" width="800" height="600"></canvas>
+        </div>
+        <div id="drawControls">
+            <input type="color" id="polyColor" name="polyColor" value="#e66465">
+            <button type="button" id="startPoly" name="startPoly">Start Polygon</button>
+            <button type="button" id="endPoly" name="endPoly">End Polygon</button>
+        </div>
     </div>
+
     <script src="math2d.js"></script>
     <script src="animations.js"></script>
     <script src="Object2D.js"></script>

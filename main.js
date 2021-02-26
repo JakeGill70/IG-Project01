@@ -1,6 +1,9 @@
 "use strict";
 (function _main() {
     let canvas = document.getElementById("drawingCanvas");
+    let input_StartButton = document.getElementById("startPoly");
+    let input_endButton = document.getElementById("endPoly");
+    let input_color = document.getElementById("polyColor");
     let world = new World2D(canvas);
     let animationLoop = new AnimationLoop(world);
 
