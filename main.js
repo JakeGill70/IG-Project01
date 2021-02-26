@@ -4,6 +4,7 @@
     let canvas = document.getElementById("drawingCanvas");
     let input_StartButton = document.getElementById("startPoly");
     let input_endButton = document.getElementById("endPoly");
+    let input_undoButton = document.getElementById("undoPoly");
     let input_color = document.getElementById("polyColor");
     let world = new World2D(canvas);
     let animationLoop = new AnimationLoop(world);
@@ -18,8 +19,9 @@
     var newPolyCount = 0;
     var newPoly = new Object2D();
 
-    // Don't show the end button by default
+    // Don't show the end or undo buttons by default
     input_endButton.style.display = "none";
+    input_undoButton.style.display = "none";
 
 
 
@@ -41,7 +43,7 @@
         newPoly.vertices.push(mousePosition);
         // Remove final 0
         newPoly.edges.pop();
-        // Add latest vertex
+        // Add latest vertex edge
         newPoly.edges.push(newPoly.vertices.length - 1);
         // Connect latest to final 0
         newPoly.edges.push(newPoly.vertices.length - 1);
@@ -55,10 +57,26 @@
         world.objects.set(name, newPoly);
     });
 
+    input_undoButton.addEventListener("click", (event) => {
+        // Remove latest vertex
+        newPoly.vertices.pop()
+        // Remove final 0
+        newPoly.edges.pop();
+        // Remove latest vertex from edge
+        newPoly.edges.pop();
+        // Remove connection to final zero
+        newPoly.edges.pop();
+        // Add final zero
+        newPoly.edges.push(0);
+
+        console.log(newPoly.edges);
+    });
+
     input_StartButton.addEventListener("click", (event) => {
         // Switch button displays
         input_StartButton.style.display = "none";
         input_endButton.style.display = "block";
+        input_undoButton.style.display = "block";
         // Create a new Object2D to manipulate
         _startNewPolygon();
     });
@@ -67,6 +85,7 @@
         // Switch button displays
         input_StartButton.style.display = "block";
         input_endButton.style.display = "none";
+        input_undoButton.style.display = "none";
         // Stop manipulating this Object2D
         _endNewPolygon();
     });
