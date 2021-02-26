@@ -10,6 +10,8 @@
     let animationLoop = new AnimationLoop(world);
     let isDrawingNewPolygon = false;
 
+    let sceneCount = 0;
+
     // Setup the world coordinate system
     world.dc.setYBasis({ x: 0, y: -1 });
     world.dc.translate(canvas.width / 2, canvas.height / 2);
@@ -43,10 +45,12 @@
         let dcToWc = new Matrix2D();
         dcToWc.setMatrix(world.dc.getInverse());
         let mousePosition = dcToWc.transform({ x: realMouseX, y: realMouseY });
-        console.log(mousePosition);
 
         if (isDrawingNewPolygon) {
             _addVertexToPolygon(mousePosition.x, mousePosition.y);
+        }
+        else {
+            _switchScene(++sceneCount);
         }
 
     });
@@ -207,7 +211,7 @@
         }
     }
 
-    function _locadScene3Art() {
+    function _loadScene3Art() {
         let textOBject = new Object2D();
         textOBject.render = function (ctx, dc) {
             ctx.font = "48px sans-serif";
@@ -227,6 +231,24 @@
             assetGetters[name] = await $.getJSON("Art/Scene4/" + name + ".json").then(Response => {
                 world.objects.set(name, _convertResponseToObject2D(Response));
             });
+        }
+    }
+
+    function _switchScene(scene) {
+        world.objects.clear();
+        switch (scene) {
+            case 1:
+                _loadScene1Art();
+                break;
+            case 2:
+                _loadScene2Art();
+                break;
+            case 3:
+                _loadScene3Art();
+                break;
+            case 4:
+                _loadScene4Art();
+                break;
         }
     }
 
