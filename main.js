@@ -26,6 +26,8 @@
     // Set the background color to near-black
     world.bgColor = "#2A2A2A";
 
+    _loadScene1Art();
+
     canvas.addEventListener('click', (event) => {
         // Implementation based on notes by Dr. Jeff Roach
         // inside of "CSCI4157-Animation-HierarchicalModeling" on D2L.
@@ -143,6 +145,34 @@
             return filename;
         }
         return null;
+    }
+
+    function _convertResponseToObject2D(responseAsset) {
+        /* TODO: This should really be an overloaded constructor in Object2D.
+
+            The assets, when stored as JSON, only store the data, not methods.
+            The world object requires these methods. So, we must make new
+            Object2D objects that have those methods then copy the asset data
+            over to the new object.
+            */
+        let asset = new Object2D();
+        asset.vertices = responseAsset.vertices;
+        asset.edges = responseAsset.edges;
+        asset.fillColor = responseAsset.fillColor;
+        asset.lineColor = responseAsset.lineColor;
+        asset.isFilled = responseAsset.isFilled;
+        return asset;
+    }
+
+    async function _loadScene1Art() {
+        let AssetNames = ["CaveEntrance", "LightPath", "Face", "Fire1", "Fire2", "Fire3", "Fire4", "FirePlace", "Hat", "Legs", "Torso"];
+        let assetGetters = {};
+
+        for (const name of AssetNames) {
+            assetGetters[name] = await $.getJSON("Art/Scene1/" + name + ".json").then(Response => {
+                world.objects.set(name, _convertResponseToObject2D(Response));
+            });
+
     }
 
 })();
