@@ -24,7 +24,6 @@ class HoverAnimation {
         this.update = function _update(elapsedTimeMS) {
             _totalTime += elapsedTimeMS;
             let deltaAmt = Math.sin((_totalTime / (ONE_SECOND * _speed)) + _offset) * _amt;
-            console.log(deltaAmt);
             _object.orientation.translate(0, deltaAmt);
         };
     }
