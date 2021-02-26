@@ -8,6 +8,7 @@
     let input_color = document.getElementById("polyColor");
     let world = new World2D(canvas);
     let animationLoop = new AnimationLoop(world);
+    let isDrawingNewPolygon = false;
 
     // Setup the world coordinate system
     world.dc.setYBasis({ x: 0, y: -1 });
@@ -42,22 +43,10 @@
         let mousePosition = dcToWc.transform({ x: realMouseX, y: realMouseY });
         console.log(mousePosition);
 
-        // Add the mouse position as a vertex
-        newPoly.vertices.push(mousePosition);
-        // Remove final 0
-        newPoly.edges.pop();
-        // Add latest vertex edge
-        newPoly.edges.push(newPoly.vertices.length - 1);
-        // Connect latest to final 0
-        newPoly.edges.push(newPoly.vertices.length - 1);
-        if (newPoly.edges.length != 2) {
-            newPoly.edges.push(0);
+        if (isDrawingNewPolygon) {
+            _addVertexToPolygon(mousePosition.x, mousePosition.y);
         }
 
-        console.log(newPoly.edges);
-
-        let name = "newPoly" + newPolyCount;
-        world.objects.set(name, newPoly);
     });
 
     input_undoButton.addEventListener("click", (event) => {
@@ -94,6 +83,8 @@
     });
 
     function _startNewPolygon() {
+        isDrawingNewPolygon = true;
+        console.log("Is draw poly", isDrawingNewPolygon);
         newPolyCount++;
         let name = "newPoly" + newPolyCount;
         newPoly = new Object2D();
@@ -103,7 +94,29 @@
         world.objects.set(name, newPoly);
     }
 
+    function _addVertexToPolygon(x, y) {
+        let _x = x;
+        let _y = y;
+        // Add the mouse position as a vertex
+        newPoly.vertices.push({ x: _x, y: _y });
+        // Remove final 0
+        newPoly.edges.pop();
+        // Add latest vertex edge
+        newPoly.edges.push(newPoly.vertices.length - 1);
+        // Connect latest to final 0
+        newPoly.edges.push(newPoly.vertices.length - 1);
+        if (newPoly.edges.length != 2) {
+            newPoly.edges.push(0);
+        }
+
+        console.log(newPoly.edges);
+
+        let name = "newPoly" + newPolyCount;
+        world.objects.set(name, newPoly);
+    }
+
     function _endNewPolygon() {
+        isDrawingNewPolygon = false;
         // Save the this Object2D's properties
         let polyStr = JSON.stringify(newPoly);
         let name = _getFilenamePopup();
