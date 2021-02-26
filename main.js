@@ -29,6 +29,7 @@
 
     //_loadScene1Art();
     //_loadScene2Art();
+    // _loadScene4Art();
 
     canvas.addEventListener('click', (event) => {
         // Implementation based on notes by Dr. Jeff Roach
@@ -216,6 +217,17 @@
         };
 
         world.objects.set("text", textOBject);
+    }
+
+    async function _loadScene4Art() {
+        let AssetNames = ["Blade", "FingerGuard", "RightWing", "LeftWing", "Jewel", "Palm", "Handle", "Finger1", "Finger2", "Finger3", "Finger4", "Thumb", "Thumb", "Arm"];
+        let assetGetters = {};
+
+        for (const name of AssetNames) {
+            assetGetters[name] = await $.getJSON("Art/Scene4/" + name + ".json").then(Response => {
+                world.objects.set(name, _convertResponseToObject2D(Response));
+            });
+        }
     }
 
 })();
