@@ -27,7 +27,8 @@
     // Set the background color to near-black
     world.bgColor = "#2A2A2A";
 
-    _loadScene1Art();
+    //_loadScene1Art();
+    //_loadScene2Art();
 
     canvas.addEventListener('click', (event) => {
         // Implementation based on notes by Dr. Jeff Roach
@@ -192,6 +193,17 @@
         world.objects.get("Fire2").animation = new HoverAnimation(world.objects.get("Fire2"), 0.1, 0.1, 0.25);
         world.objects.get("Fire3").animation = new HoverAnimation(world.objects.get("Fire3"), 0.1, 0.3, 0.15);
         world.objects.get("Fire4").animation = new HoverAnimation(world.objects.get("Fire4"), 0.1, 0.6, 0.50);
+    }
+
+    async function _loadScene2Art() {
+        let AssetNames = ["Body", "Head", "Brow", "LeftCheek", "LeftEye", "LeftHair", "Mouth", "Nose", "RightCheek", "RightEye", "RightHair", "Wrinkle1", "Wrinkle2"];
+        let assetGetters = {};
+
+        for (const name of AssetNames) {
+            assetGetters[name] = await $.getJSON("Art/Scene2/" + name + ".json").then(Response => {
+                world.objects.set(name, _convertResponseToObject2D(Response));
+            });
+        }
     }
 
 })();
