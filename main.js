@@ -63,6 +63,14 @@
         _startNewPolygon();
     });
 
+    input_endButton.addEventListener("click", (event) => {
+        // Switch button displays
+        input_StartButton.style.display = "block";
+        input_endButton.style.display = "none";
+        // Stop manipulating this Object2D
+        _endNewPolygon();
+    });
+
     function _startNewPolygon() {
         newPolyCount++;
         let name = "newPoly" + newPolyCount;
@@ -72,4 +80,49 @@
         newPoly.lineColor = input_color.value;
         world.objects.set(name, newPoly);
     }
+
+    function _endNewPolygon() {
+        // Save the this Object2D's properties
+        let polyStr = JSON.stringify(newPoly);
+        let name = _getFilenamePopup();
+        if (name) {
+            _saveFile(name, polyStr);
+        }
+    }
+
+    function _saveFile(filename, data) {
+        /*
+        Saves a file for download.
+
+        Code written by Stack Overflow user Ludovic Feltz
+        in a response to the Sep. 2010 Question:
+            "How to create a file in memory for user to download, but not through server?"
+
+        https://stackoverflow.com/questions/3665115/how-to-create-a-file-in-memory-for-user-to-download-but-not-through-server
+        */
+        var blob = new Blob([data], { type: 'text/csv' });
+        if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveBlob(blob, filename);
+        }
+        else {
+            var elem = window.document.createElement('a');
+            elem.href = window.URL.createObjectURL(blob);
+            elem.download = filename;
+            document.body.appendChild(elem);
+            elem.click();
+            document.body.removeChild(elem);
+        }
+    }
+
+    function _getFilenamePopup(defaultName = "Polygon.json") {
+        // Makes a generic popup box asking what the file name should be.
+        // Returns null if the user cancels and doesn't enter anything.
+        // Otherwise, returns the name that the user entered.
+        var filename = prompt("Please enter your name:", defaultName);
+        if (filename) {
+            return filename;
+        }
+        return null;
+    }
+
 })();
