@@ -23,7 +23,8 @@
     input_endButton.style.display = "none";
     input_undoButton.style.display = "none";
 
-
+    // Set the background color to near-black
+    world.bgColor = "#2A2A2A";
 
     canvas.addEventListener('click', (event) => {
         // Implementation based on notes by Dr. Jeff Roach
