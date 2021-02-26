@@ -172,7 +172,13 @@
             assetGetters[name] = await $.getJSON("Art/Scene1/" + name + ".json").then(Response => {
                 world.objects.set(name, _convertResponseToObject2D(Response));
             });
+        }
 
+        // Add animation to fire
+        world.objects.get("Fire1").animation = new HoverAnimation(world.objects.get("Fire1"), 0.1, 0.0, 0.50);
+        world.objects.get("Fire2").animation = new HoverAnimation(world.objects.get("Fire2"), 0.1, 0.1, 0.25);
+        world.objects.get("Fire3").animation = new HoverAnimation(world.objects.get("Fire3"), 0.1, 0.3, 0.15);
+        world.objects.get("Fire4").animation = new HoverAnimation(world.objects.get("Fire4"), 0.1, 0.6, 0.50);
     }
 
 })();
