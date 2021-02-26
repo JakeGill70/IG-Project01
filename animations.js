@@ -12,6 +12,24 @@ class RotateAnimation {
     }
 };
 
+class HoverAnimation {
+    constructor(object, amt, offset = 0, speed = 1.0) {
+        let _object = object;
+        let _amt = amt;
+        const ONE_SECOND = 1000;
+        let _totalTime = 0;
+        let _offset = offset;
+        let _speed = speed;
+
+        this.update = function _update(elapsedTimeMS) {
+            _totalTime += elapsedTimeMS;
+            let deltaAmt = Math.sin((_totalTime / (ONE_SECOND * _speed)) + _offset) * _amt;
+            console.log(deltaAmt);
+            _object.orientation.translate(0, deltaAmt);
+        };
+    }
+};
+
 class RotateAboutCenterAnimation {
     constructor(object, degreesPerSecond = 45) {
         let _object = object;
