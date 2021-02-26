@@ -206,4 +206,16 @@
         }
     }
 
+    function _locadScene3Art() {
+        let textOBject = new Object2D();
+        textOBject.render = function (ctx, dc) {
+            ctx.font = "48px sans-serif";
+            ctx.fillStyle = "#FF0000";
+            ctx.fillText("It's dangerous to go alone,", 100, 250);
+            ctx.fillText("take this!", 300, 350);
+        };
+
+        world.objects.set("text", textOBject);
+    }
+
 })();
