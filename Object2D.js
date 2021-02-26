@@ -50,18 +50,27 @@ class Object2D {
         }
 
         function _filledRender(context, parentOrientation) {
-            const si = _this.edges[0];
-            let sv = _this.orientation.transform(_this.vertices[si]);
-            sv = parentOrientation.transform(sv);
-            context.moveTo(sv.x, sv.y);
-            for (let i = 1; i < _this.edges.length - 1; i += 2) {
-                const ei = _this.edges[i];
-                let ev = _this.orientation.transform(_this.vertices[ei]);
-                ev = parentOrientation.transform(ev);
-                context.lineTo(ev.x, ev.y);
+            try {
+                const si = _this.edges[0];
+                let sv = _this.orientation.transform(_this.vertices[si]);
+                sv = parentOrientation.transform(sv);
+                context.moveTo(sv.x, sv.y);
+                for (let i = 1; i < _this.edges.length - 1; i += 2) {
+                    const ei = _this.edges[i];
+                    let ev = _this.orientation.transform(_this.vertices[ei]);
+                    ev = parentOrientation.transform(ev);
+                    context.lineTo(ev.x, ev.y);
+                }
+                context.fillStyle = _this.fillColor;
+                context.fill();
+            } catch (error) {
+                // FIXME: This hacky workaround for drawing edge-less objects.
+                // As of time of writing, 2/26/21, this only throws an error 
+                // if no the object has no edges when attempting to render. 
+                // So the error can just be ignored because nothing needs to 
+                // be drawn if there are no edges.
             }
-            context.fillStyle = _this.fillColor;
-            context.fill();
+
         }
 
         this.addChild = function _addChild(child, position) {
